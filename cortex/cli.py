@@ -508,6 +508,57 @@ class CortexCLI:
             traceback.print_exc()
             return 1
 
+    def demo(self):
+        """Run a demo showing Cortex capabilities without API key"""
+        import time
+
+        show_banner()
+        console.print()
+
+        # Simulated installation flow
+        cx_print("Understanding request: [bold]install docker[/bold]", "thinking")
+        time.sleep(0.5)
+
+        cx_print("Planning installation...", "info")
+        time.sleep(0.3)
+
+        cx_header("Installation Plan")
+
+        cx_print("[bold]docker.io[/bold] (24.0.5) — Container runtime", "info")
+        cx_print("[bold]docker-compose[/bold] (2.20.2) — Multi-container orchestration", "info")
+        cx_print("[bold]docker-buildx[/bold] (0.11.2) — Extended build capabilities", "info")
+
+        console.print()
+        console.print("[dim]Generated commands:[/dim]")
+        console.print("  1. sudo apt update")
+        console.print("  2. sudo apt install -y docker.io")
+        console.print("  3. sudo systemctl enable docker")
+        console.print("  4. sudo systemctl start docker")
+
+        console.print()
+        cx_step(1, 4, "Updating package lists...")
+        time.sleep(0.3)
+        cx_step(2, 4, "Installing docker.io...")
+        time.sleep(0.3)
+        cx_step(3, 4, "Enabling docker service...")
+        time.sleep(0.3)
+        cx_step(4, 4, "Starting docker service...")
+        time.sleep(0.3)
+
+        console.print()
+        cx_print("Installation complete!", "success")
+        cx_print("Docker is ready to use.", "info")
+
+        console.print()
+        console.print("[dim]━━━ This was a demo. No packages were installed. ━━━[/dim]")
+        console.print()
+        cx_print("To get started for real:", "info")
+        console.print("  1. Set your API key: [bold]export ANTHROPIC_API_KEY='your-key'[/bold]")
+        console.print("  2. Install something: [bold]cortex install docker --execute[/bold]")
+        console.print()
+
+        return 0
+
 
 def main():
     parser = argparse.ArgumentParser(
@@ -516,27 +567,27 @@ def main():
         formatter_class=argparse.RawDescriptionHelpFormatter,
         epilog="""
 Examples:
-  cortex install docker
-  cortex install docker --execute
-  cortex install "python 3.11 with pip"
-  cortex install nginx --dry-run
-  cortex history
-  cortex history show <id>
-  cortex rollback <id>
-  cortex check-pref
-  cortex check-pref ai.model
-  cortex edit-pref set ai.model gpt-4
-  cortex edit-pref delete theme
-  cortex edit-pref reset-all
+  cortex demo                       # See Cortex in action (no API key needed)
+  cortex install docker             # Plan docker installation
+  cortex install docker --execute   # Actually install docker
+  cortex install "python 3.11"      # Natural language works too
+  cortex history                    # View installation history
+  cortex rollback <id>              # Undo an installation
 
 Environment Variables:
+  ANTHROPIC_API_KEY   Anthropic API key for Claude (recommended)
   OPENAI_API_KEY      OpenAI API key for GPT-4
-  ANTHROPIC_API_KEY   Anthropic API key for Claude
         """
     )
+
+    # Version flag
+    parser.add_argument('--version', '-v', action='version', version=f'cortex {VERSION}')
     
     subparsers = parser.add_subparsers(dest='command', help='Available commands')
-    
+
+    # Demo command (first - show this to new users)
+    demo_parser = subparsers.add_parser('demo', help='See Cortex in action (no API key needed)')
+
     # Install command
     install_parser = subparsers.add_parser('install', help='Install software using natural language')
     install_parser.add_argument('software', type=str, help='Software to install (natural language)')
@@ -577,7 +628,9 @@ Environment Variables:
     cli = CortexCLI()
     
     try:
-        if args.command == 'install':
+        if args.command == 'demo':
+            return cli.demo()
+        elif args.command == 'install':
             return cli.install(args.software, execute=args.execute, dry_run=args.dry_run)
         elif args.command == 'history':
             return cli.history(limit=args.limit, status=args.status, show_id=args.show_id)
