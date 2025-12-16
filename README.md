@@ -1,3 +1,5 @@
+[![CI](https://github.com/cortexlinux/cortex/actions/workflows/ci.yml/badge.svg)](https://github.com/cortexlinux/cortex/actions/workflows/ci.yml)
+
 <p align="center">
   <img src="images/cortex_logo.png" alt="Cortex Linux" width="200" />
 </p>
