@@ -3,9 +3,13 @@
 Tests for Installation Verification System
 """
 
+import os
+import sys
 import unittest
 
-from installation_verifier import InstallationVerifier, VerificationStatus
+sys.path.insert(0, os.path.join(os.path.dirname(__file__), ".."))
+
+from cortex.installation_verifier import InstallationVerifier, VerificationStatus
 
 
 class TestInstallationVerifier(unittest.TestCase):

@@ -7,8 +7,9 @@ import tempfile
 import unittest
 from pathlib import Path
 
-sys.path.insert(0, os.path.dirname(os.path.abspath(__file__)))
-from logging_system import CortexLogger, LogContext
+sys.path.insert(0, os.path.join(os.path.dirname(__file__), ".."))
+
+from cortex.logging_system import CortexLogger, LogContext
 
 
 class TestCortexLogger(unittest.TestCase):

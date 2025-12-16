@@ -9,11 +9,18 @@ import contextlib
 import os
 import shutil
 import subprocess
+import sys
 import tempfile
 import unittest
 from unittest.mock import MagicMock, patch
 
-from sandbox_executor import CommandBlocked, ExecutionResult, SandboxExecutor
+sys.path.insert(0, os.path.join(os.path.dirname(__file__), "../.."))
+
+from cortex.sandbox.sandbox_executor import (
+    CommandBlocked,
+    ExecutionResult,
+    SandboxExecutor,
+)
 
 
 class TestSandboxExecutor(unittest.TestCase):
